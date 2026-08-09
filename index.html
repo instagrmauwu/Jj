@@ -14,7 +14,7 @@
 }
 
 body{
-    background:#0f1c2e; 
+    background:#0f1c2e;
     color:white;
     height: 100vh;
     height: -webkit-fill-available;
@@ -38,7 +38,7 @@ body{
     align-items:center;
     z-index:9999;
     transition: opacity 0.5s ease;
-    padding-bottom: env(safe-area-inset-bottom, 40px); 
+    padding-bottom: env(safe-area-inset-bottom, 40px);
 }
 
 .splash svg{
@@ -71,7 +71,7 @@ body{
 .container{
     display:none;
     width:100%;
-    max-width:414px; 
+    max-width:414px;
     height:100%;
     padding: 30px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     flex-direction:column;
@@ -125,7 +125,7 @@ body{
 }
 
 .input-box input:focus {
-    border-color: #ffb300; 
+    border-color: #ffb300;
 }
 
 .input-box input::placeholder{
@@ -137,7 +137,7 @@ body{
     height:54px;
     border:none;
     border-radius:27px;
-    background: linear-gradient(90deg, #ffb300, #b78103); 
+    background: linear-gradient(90deg, #ffb300, #b78103);
     color:#0f1c2e;
     font-size:16px;
     font-weight: bold;
@@ -205,13 +205,13 @@ body{
     width:100vw;
     height:100vh;
     background:#0f1c2e;
-    z-index:99999; 
+    z-index:99999;
     flex-direction:column;
     align-items:center;
     justify-content:center;
     gap:15px;
-    touch-action: none; 
-    user-select: none;   
+    touch-action: none;
+    user-select: none;
 }
 
 .loading-screen .spinner{
@@ -235,17 +235,21 @@ body{
 </head>
 <body>
 
+<!-- ⭐ التدرج الذهبي معرّف هنا مرة واحدة، في SVG ثابتة لا تختفي أبداً -->
+<svg width="0" height="0" style="position:absolute; top:-9999px; left:-9999px;" aria-hidden="true">
+    <defs>
+        <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FFE082"/>
+            <stop offset="30%" stop-color="#FFD54F"/>
+            <stop offset="70%" stop-color="#FFB300"/>
+            <stop offset="100%" stop-color="#B78103"/>
+        </linearGradient>
+    </defs>
+</svg>
+
 <!-- شاشة البدء (SPLASH SCREEN) -->
 <div class="splash" id="splash">
     <svg viewBox="0 0 100 100" fill="none">
-        <defs>
-            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#FFE082"/>
-                <stop offset="30%" stop-color="#FFD54F"/>
-                <stop offset="70%" stop-color="#FFB300"/>
-                <stop offset="100%" stop-color="#B78103"/>
-            </linearGradient>
-        </defs>
         <rect width="100" height="100" rx="28" fill="#16263d"/>
         <circle cx="50" cy="50" r="34" stroke="url(#goldGrad)" stroke-width="3" fill="none" stroke-dasharray="14 6"/>
         <path d="M30 66 V34 L50 52 L70 34 V66" stroke="url(#goldGrad)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
