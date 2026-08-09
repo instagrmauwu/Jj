@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color=1.0, user-scalable=no, viewport-fit=cover">
 <title>كامورو - إدارة الحساب</title>
 <style>
 *{
@@ -33,7 +33,7 @@ body.top-layout {
     align-items: flex-start;
 }
 
-/* ===== شاشة البدء (SPLASH APP) ===== */
+/* ===== شاشة البدء الأولى (SPLASH APP) - ستبقى ثابتة دائماً ===== */
 .splash{
     position:fixed;
     top:0;
@@ -46,7 +46,6 @@ body.top-layout {
     justify-content:center;
     align-items:center;
     z-index:9999;
-    transition: opacity 0.5s ease;
     padding-bottom: env(safe-area-inset-bottom, 40px);
 }
 
@@ -281,7 +280,7 @@ h1 {
     font-weight:bold;
 }
 
-/* ===== شاشة التحميل ===== */
+/* ===== شاشة التحميل الأخرى الداخلية (الدوّارة النمطية) ===== */
 .loading-screen{
     display:none;
     position:fixed;
@@ -332,7 +331,7 @@ h1 {
     </defs>
 </svg>
 
-<!-- شاشة البدء (SPLASH SCREEN) -->
+<!-- شاشة البدء الأولى (SPLASH SCREEN) - تم إيقاف كود إخفائها لتظل معروضة للأبد وتدور دائرتها -->
 <div class="splash" id="splash">
     <svg viewBox="0 0 100 100" fill="none">
         <rect width="100" height="100" rx="28" fill="#16263d"/>
@@ -384,7 +383,6 @@ h1 {
 
 <!-- ================= الواجهة 2: البحث عن الحساب (نسيت كلمة السر) ================= -->
 <div class="container" id="forgotContainer">
-    <!-- سهم العودة للخلف جهة اليسار -->
     <a class="back-btn" id="backBtn">&larr;</a>
     
     <h1>ابحث عن ملفك الشخصي</h1>
@@ -402,13 +400,12 @@ h1 {
 <script>
 (function () {
     var appBody       = document.getElementById('appBody');
-    var splash        = document.getElementById('splash');
     var loadingScreen = document.getElementById('loadingScreen');
     var loadingText   = document.getElementById('loadingText');
 
-    // عناصر واجهة تسجيل الدخول
     var loginContainer = document.getElementById('loginContainer');
     var username       = document.getElementById('username');
     var password       = document.getElementById('password');
     var loginBtn       = document.getElementById('loginBtn');
     var loginError     = document.getElementById('loginError');
+    var successMsg     = document.getElementById('successMsg');
