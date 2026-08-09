@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo UI - Login (Prototipo didattico)</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+body{
+    background:#0f2533;
+    color:white;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* ===== SPLASH ===== */
+.splash{
+    position:fixed;
+    width:100%;
+    height:100vh;
+    background:#0f2533;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+}
+
+.splash.svg,
+.splash svg{
+    width:130px;
+    height:130px;
+}
+
+.metaSplash{
+    position:absolute;
+    bottom:50px;
+    text-align:center;
+    color:#aaa;
+    font-size:16px;
+}
+
+.metaSplash strong{
+    font-size:18px;
+    background: linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* ===== CONTAINERS ===== */
+.container{
+    display:none;
+    width:100%;
+    max-width:420px;
+    margin:auto;
+    padding:20px;
+    flex-direction:column;
+    align-items:center;
+    height:100vh;
+}
+
+.container.active{
+    display:flex;
+}
+
+/* ===== LOGIN ===== */
+.logo{
+    margin-top:80px;
+    margin-bottom:60px;
+    display:flex;
+    justify-content:center;
+}
+
+.logo svg{
+    width:95px;
+    height:95px;
+}
+
+.input-box{
+    width:100%;
+    margin-bottom:18px;
+}
+
+.input-box input{
+    width:100%;
+    height:65px;
+    border:2px solid #3b5266;
+    border-radius:20px;
+    background:transparent;
+    color:white;
+    font-size:16px;
+    padding:0 20px;
+    outline:none;
+}
+
+.input-box input::placeholder{
+    color:#a4adb6;
+}
+
+.login-btn{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:30px;
+    background:#1877f2;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.login-btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed;
+}
+
+.forgot{
+    margin-top:20px;
+    color:white;
+    text-decoration:none;
+    font-size:16px;
+}
+
+.bottom{
+    margin-top:auto;
+    width:100%;
+    text-align:center;
+    padding-bottom:30px;
+}
+
+.create{
+    width:100%;
+    height:55px;
+    border:2px solid #2d8cff;
+    border-radius:30px;
+    background:transparent;
+    color:#4fa0ff;
+    font-size:16px;
+    cursor:pointer;
+}
+
+.meta{
+    margin-top:25px;
+    font-size:18px;
+    color:#d6d6d6;
+}
+
+/* ===== 2FA ===== */
+.twofa-container{
+    display:none;
+    width:100%;
+    max-width:420px;
+    padding:20px;
+    flex-direction:column;
+    height:100vh;
+    justify-content:flex-start;
+    padding-top:80px;
+    margin:auto;
+}
+
+.twofa-container.active{
+    display:flex;
+}
+
+.back{
+    font-size:28px;
+    margin-bottom:20px;
+    cursor:pointer;
+    width:40px;
+}
+
+h1{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.sub{
+    font-size:14px;
+    color:#cfd8dc;
+    margin-bottom:20px;
+}
+
+.code-inputs{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-bottom:10px;
+}
+
+.code-inputs input{
+    width:50px;
+    height:55px;
+    text-align:center;
+    font-size:22px;
+    border-radius:12px;
+    border:1px solid #3a4a55;
+    background:#15232b;
+    color:white;
+    outline:none;
+}
+
+.code-inputs input:focus{
+    border-color:#4da3ff;
+}
+
+.info{
+    font-size:13px;
+    color:#b0bec5;
+    margin:15px 0;
+    line-height:1.4;
+    text-align:center;
+}
+
+.link{
+    color:#4da3ff;
+    font-size:14px;
+    margin-top:5px;
+    cursor:pointer;
+    text-align:center;
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:25px;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:disabled{
+    opacity:0.4;
+    cursor:not-allowed;
+}
+
+.primary{
+    background:#0a66ff;
+    color:white;
+    margin-top:20px;
+}
+
+.secondary{
+    background:#2a2f33;
+    color:#b0bec5;
+    margin-top:10px;
+}
+
+.error-msg{
+    color:#ff4444;
+    font-size:13px;
+    display:none;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+.success-msg{
+    color:#4ade80;
+    font-size:14px;
+    display:none;
+    margin-top:15px;
+    text-align:center;
+    font-weight:bold;
+}
+
+.loading-screen{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:#0f2533;
+    z-index:9999;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:15px;
+}
+
+.loading-screen .spinner{
+    width:40px;
+    height:40px;
+    border:4px solid #3b5266;
+    border-top-color:#1877f2;
+    border-radius:50%;
+    animation:spin 0.8s linear infinite;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+.loading-screen p{
+    font-size:15px;
+    color:#cfd8dc;
+}
+
+.demo-badge{
+    position:fixed;
+    top:12px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#1e3a4c;
+    border:1px solid #3b5266;
+    color:#a4adb6;
+    font-size:12px;
+    padding:6px 14px;
+    border-radius:20px;
+    z-index:10000;
+    pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<div class="demo-badge">DEMO UI — nessun dato viene inviato</div>
+
+<!-- SPLASH -->
+<div class="splash" id="splash">
+<svg viewBox="0 0 24 24" fill="none">
+<defs>
+<linearGradient id="ig" x1="0" y1="1" x2="1" y2="0">
+<stop offset="0%" stop-color="#feda75"/>
+<stop offset="20%" stop-color="#fa7e1e"/>
+<stop offset="45%" stop-color="#d62976"/>
+<stop offset="70%" stop-color="#962fbf"/>
+<stop offset="100%" stop-color="#4f5bd5"/>
+</linearGradient>
+</defs>
+<rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#ig)" stroke-width="2.2"/>
+<circle cx="12" cy="12" r="4.2" stroke="url(#ig)" stroke-width="2.2"/>
+<circle cx="17.5" cy="6.5" r="1.3" fill="url(#ig)"/>
+</svg>
+<div class="metaSplash">
+<span>from</span>
+<strong>Meta</strong>
+</div>
+</div>
+
+<!-- LOADING -->
+<div class="loading-screen" id="loadingScreen">
+<div class="spinner"></div>
+<p id="loadingText">Verifica in corso...</p>
+</div>
+
+<!-- LOGIN -->
+<div class="container active" id="loginContainer">
+<div class="logo">
+<svg viewBox="0 0 24 24" fill="none">
+<defs>
+<linearGradient id="ig2" x1="0" y1="1" x2="1" y2="0">
+<stop offset="0%" stop-color="#feda75"/>
+<stop offset="20%" stop-color="#fa7e1e"/>
+<stop offset="45%" stop-color="#d62976"/>
+<stop offset="70%" stop-color="#962fbf"/>
+<stop offset="100%" stop-color="#4f5bd5"/>
+</linearGradient>
+</defs>
+<rect x="3" y="3" width="18" height="18" rx="5" stroke="url(#ig2)" stroke-width="2.2"/>
+<circle cx="12" cy="12" r="4.2" stroke="url(#ig2)" stroke-width="2.2"/>
+<circle cx="17.5" cy="6.5" r="1.3" fill="url(#ig2)"/>
+</svg>
+</div>
+
+<div class="input-box">
+<input type="text" id="username" placeholder="Nome utente, e-mail o numero di cellulare" autocomplete="off">
+</div>
+<div class="input-box">
+<input type="password" id="password" placeholder="Password" autocomplete="off">
+</div>
+
+<div id="loginError" class="error-msg">Dati non validi. Riprova.</div>
+<div id="successMsg" class="success-msg">✅ Accesso riuscito (demo) — Nessun dato è stato inviato.</div>
+
+<button class="login-btn" id="loginBtn" disabled>Accedi</button>
+<a href="#" class="forgot" id="forgotLink">Password dimenticata?</a>
+
+<div class="bottom">
+<button class="create" id="createBtn" type="button">Crea nuovo account</button>
+<div class="meta">∞ Meta</div>
+</div>
+</div>
+
+<!-- 2FA -->
+<div class="twofa-container" id="twofaContainer">
+<div class="back" id="backToLogin">←</div>
+<h1>Controlla</h1>
+<div class="sub">Abbiamo inviato un codice a <span id="displayUser">...</span></div>
+
+<div class="code-inputs" id="codeInputs">
+<input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="code-box" autocomplete="off">
+<input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="code-box" autocomplete="off">
+<input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="code-box" autocomplete="off">
+<input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="code-box" autocomplete="off">
+<input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" class="code-box" autocomplete="off">
+</div>
+
+<div class="info">Inserisci il codice a 6 cifre inviato al tuo dispositivo</div>
+
+<div id="twofaError" class="error-msg">Codice non valido. Riprova.</div>
+
+<button class="primary" id="verifyBtn" disabled>Continua</button>
+<div class="link" id="resendLink">Invia di nuovo il codice</div>
+</div>
+<script>
+/* ============================================================
+   DEMO UI LOGIC — purely front-end, nothing is sent or stored.
+   No network calls, no data exfiltration, no persistence.
+   ============================================================ */
+(function () {
+  const splash        = document.getElementById('splash');
+  const loadingScreen = document.getElementById('loadingScreen');
+  const loadingText   = document.getElementById('loadingText');
+  const loginContainer  = document.getElementById('loginContainer');
+  const twofaContainer  = document.getElementById('twofaContainer');
+
+  const username    = document.getElementById('username');
+  const password    = document.getElementById('password');
+  const loginBtn    = document.getElementById('loginBtn');
+  const loginError  = document.getElementById('loginError');
+  const successMsg  = document.getElementById('successMsg');
+  const displayUser = document.getElementById('displayUser');
+
+  const codeInputs = document.querySelectorAll('.code-box');
+  const verifyBtn  = document.getElementById('verifyBtn');
+  const twofaError = document.getElementById('twofaError');
+  const backBtn    = document.getElementById('backToLogin');
+  const resendLink = document.getElementById('resendLink');
+  const forgotLink = document.getElementById('forgotLink');
+  const createBtn  = document.getElementById('createBtn');
+
+  // --- Splash: hide after a short delay ---
+  setTimeout(function () { splash.style.display = 'none'; }, 1800);
+
+  // --- Enable login button only when both fields are filled ---
+  function updateLoginState() {
+    loginBtn.disabled = !(username.value.trim() !== '' && password.value !== '');
+  }
+  username.addEventListener('input', updateLoginState);
+  password.addEventListener('input', updateLoginState);
+  updateLoginState();
+
+  // --- Login -> 2FA step (validation only, nothing is sent) ---
+  loginBtn.addEventListener('click', function () {
+    loginError.style.display = 'none';
+    successMsg.style.display = 'none';
+    if (username.value.trim() === '' || password.value === '') {
+      loginError.style.display = 'block';
+      return;
+    }
+    displayUser.textContent = username.value.trim();
+    loginContainer.classList.remove('active');
+    twofaContainer.classList.add('active');
+    resetCodes();
+    codeInputs[0].focus();
+  });
+
+  // --- Back to login ---
+  backBtn.addEventListener('click', function () {
+    twofaContainer.classList.remove('active');
+    loginContainer.classList.add('active');
+    resetCodes();
+  });
+
+  // --- 2FA code inputs: digits only, auto-advance, paste support ---
+  codeInputs.forEach(function (input, index) {
+    input.addEventListener('input', function () {
+      input.value = input.value.replace(/[^0-9]/g, '').slice(0, 1);
+      if (input.value && index < codeInputs.length - 1) {
+        codeInputs[index + 1].focus();
+      }
+      verifyBtn.disabled = getCode().length < 6;
+      twofaError.style.display = 'none';
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Backspace' && input.value === '' && index > 0) {
+        codeInputs[index - 1].focus();
+      }
+    });
+    input.addEventListener('paste', function (e) {
+      const pasted = (e.clipboardData.getData('text') || '')
+                     .replace(/[^0-9]/g, '')
+                     .slice(0, codeInputs.length);
+      if (!pasted) return;
+      e.preventDefault();
+      pasted.split('').forEach(function (ch, i) { codeInputs[i].value = ch; });
+      codeInputs[Math.min(pasted.length, codeInputs.length) - 1].focus();
+      verifyBtn.disabled = getCode().length < 6;
+    });
+  });
+
+  function getCode() {
+    return Array.from(codeInputs).map(function (i) { return i.value; }).join('');
+  }
+
+  function resetCodes() {
+    codeInputs.forEach(function (i) { i.value = ''; });
+    twofaError.style.display = 'none';
+    verifyBtn.disabled = true;
+  }
+
+  // --- Verify: any 6 digits succeed (pure demo rule) ---
+  verifyBtn.addEventListener('click', function () {
+    if (getCode().length < 6) return;
+
+    // Fake "checking" delay using the existing loading screen
+    loadingScreen.style.display = 'flex';
+    loadingText.textContent = 'Verifica in corso...';
+    setTimeout(function () {
+      loadingScreen.style.display = 'none';
+      twofaContainer.classList.remove('active');
+      loginContainer.classList.add('active');
+      username.value = '';
+      password.value = '';
+      loginBtn.disabled = true;
+      resetCodes();
+      successMsg.style.display = 'block';
+      successMsg.textContent = '✅ Accesso riuscito (demo) — Nessun dato è stato inviato.';
+    }, 1500);
+  });
+
+  // --- Resend link: demo notice only ---
+  resendLink.addEventListener('click', function () {
+    alert('Demo: in un vero flusso qui verrebbe inviato un nuovo codice.');
+  });
+
+  // --- Forgot password / Create account: demo notice only ---
+  forgotLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    alert('Demo: pagina di recupero password non inclusa.');
+  });
+  createBtn.addEventListener('click', function () {
+    alert('Demo: pagina di registrazione non inclusa.');
+  });
+})();
+</script>
+</body>
+</html>
