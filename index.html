@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color=1.0, user-scalable=no, viewport-fit=cover">
-<title>تسجيل دخول كامورو</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>كامورو - إدارة الحساب</title>
 <style>
 *{
     margin:0;
@@ -20,8 +20,17 @@ body{
     height: -webkit-fill-available;
     display:flex;
     justify-content:center;
-    align-items:center;
     overflow: hidden;
+}
+
+/* التموضع الافتراضي لتوسيط شاشة الدخول */
+body.center-layout {
+    align-items: center;
+}
+
+/* التموضع الخاص بصفحة نسيت كلمة السر لتبدأ من الأعلى تماماً */
+body.top-layout {
+    align-items: flex-start;
 }
 
 /* ===== شاشة البدء (SPLASH APP) ===== */
@@ -75,12 +84,23 @@ body{
     height:100%;
     padding: 30px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     flex-direction:column;
-    align-items:center;
-    justify-content: space-between;
 }
 
 .container.active{
     display:flex;
+}
+
+/* تكييف حاوية الدخول لتوزيع العناصر عمودياً بالتساوي */
+#loginContainer {
+    align-items:center;
+    justify-content: space-between;
+}
+
+/* تكييف حاوية البحث لتبدأ من اليمين والأعلى وتترك الفراغ بالأسفل */
+#forgotContainer {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 24px;
 }
 
 /* ===== المحتوى الرئيسي لتسجيل الدخول ===== */
@@ -105,6 +125,43 @@ body{
     border-radius: 24px;
 }
 
+/* ===== عناصر واجهة البحث عن حساب ===== */
+.back-btn {
+    font-size: 24px;
+    color: #ffb300;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 25px;
+    align-self: flex-start;
+    display: inline-block;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    text-align: right;
+    width: 100%;
+}
+
+.sub-title {
+    font-size: 15px;
+    color: #8e9aa8;
+    margin-bottom: 14px;
+    text-align: right;
+    width: 100%;
+}
+
+.hacked-link {
+    color: #ffb300;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 40px;
+    display: inline-block;
+}
+
+/* ===== صناديق المدخلات المشتركة ===== */
 .input-box{
     width:100%;
     margin-bottom:16px;
@@ -132,7 +189,8 @@ body{
     color:#738499;
 }
 
-.login-btn{
+/* ===== الأزرار والتنسيقات المشتركة ===== */
+.login-btn, .primary-btn{
     width:100%;
     height:54px;
     border:none;
@@ -147,12 +205,38 @@ body{
     box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
 }
 
+.primary-btn {
+    height: 56px;
+    border-radius: 28px;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.secondary-btn {
+    width: 100%;
+    height: 56px;
+    border: 1.5px solid #22354f;
+    border-radius: 28px;
+    background: #16263d;
+    color: #8e9aa8;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.secondary-btn:hover {
+    border-color: #ffb300;
+    color: white;
+}
+
 .forgot{
     margin-top:22px;
     color:#ffb300;
     text-decoration:none;
     font-size:14px;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .bottom{
@@ -160,7 +244,6 @@ body{
     text-align:center;
 }
 
-/* التعديل هنا: إضافة الهامش العلوي (margin-top) لمنع تداخل الزر مع النصوص */
 .create{
     width:100%;
     height:50px;
@@ -235,9 +318,9 @@ body{
 }
 </style>
 </head>
-<body>
+<body class="center-layout" id="appBody">
 
-<!-- ⭐ التدرج الذهبي معرّف هنا مرة واحدة، في SVG ثابتة لا تختفي أبداً -->
+<!-- ⭐ التدرج الذهبي الموحد -->
 <svg width="0" height="0" style="position:absolute; top:-9999px; left:-9999px;" aria-hidden="true">
     <defs>
         <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
@@ -262,13 +345,13 @@ body{
     </div>
 </div>
 
-<!-- شاشة انتظر/جاري التحميل -->
+<!-- شاشة انتظر/جاري التحميل الدوّارة -->
 <div class="loading-screen" id="loadingScreen">
     <div class="spinner"></div>
     <p id="loadingText">جاري التحقق من البيانات...</p>
 </div>
 
-<!-- واجهة تسجيل الدخول الرئيسي -->
+<!-- ================= الواجهة 1: تسجيل الدخول الرئيسي ================= -->
 <div class="container active" id="loginContainer">
     <div class="main-content">
         <div class="logo">
@@ -287,10 +370,10 @@ body{
         </div>
 
         <div class="error-msg" id="loginError">يرجى ملء جميع الحقول.</div>
-        <div class="success-msg" id="successMsg">تم تسجيل الدخول بنجاح! (نسخة تجريبية — لم يتم إرسال أي بيانات)</div>
+        <div class="success-msg" id="successMsg">تم تسجيل الدخول بنجاح!</div>
 
         <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
-        <a href="#" class="forgot" id="forgotLink">هل نسيت كلمة السر؟</a>
+        <a class="forgot" id="forgotLink">هل نسيت كلمة السر؟</a>
     </div>
 
     <div class="bottom">
@@ -299,76 +382,33 @@ body{
     </div>
 </div>
 
+<!-- ================= الواجهة 2: البحث عن الحساب (نسيت كلمة السر) ================= -->
+<div class="container" id="forgotContainer">
+    <!-- سهم العودة للخلف جهة اليسار -->
+    <a class="back-btn" id="backBtn">&larr;</a>
+    
+    <h1>ابحث عن ملفك الشخصي</h1>
+    <p class="sub-title">أدخل رقم هاتفك المحمول المربوط بالحساب.</p>
+    <a href="#" class="hacked-link">أعتقد أن حسابي قد تعرض للاختراق؟</a>
+    
+    <div class="input-box">
+        <input type="tel" id="phone" placeholder="رقم الهاتف المحمول">
+    </div>
+    
+    <button class="primary-btn" id="searchPhoneBtn">متابعة</button>
+    <button class="secondary-btn" id="switchMethodBtn">البحث بواسطة البريد الإلكتروني أو اسم المستخدم</button>
+</div>
+
 <script>
-/* ============================================================
-   منطق الواجهة — نسخة تجريبية نقية (front-end only)
-   لا يوجد أي إرسال بيانات أو تخزين أو طلبات شبكة.
-   ============================================================ */
 (function () {
+    var appBody       = document.getElementById('appBody');
     var splash        = document.getElementById('splash');
     var loadingScreen = document.getElementById('loadingScreen');
     var loadingText   = document.getElementById('loadingText');
 
-    var username   = document.getElementById('username');
-    var password   = document.getElementById('password');
-    var loginBtn   = document.getElementById('loginBtn');
-    var loginError = document.getElementById('loginError');
-    var successMsg = document.getElementById('successMsg');
-    var forgotLink = document.getElementById('forgotLink');
-    var createBtn  = document.getElementById('createBtn');
-
-    // 1) إخفاء شاشة البدء (Splash) بعد ثانيتين مع تلاشي ناعم
-    setTimeout(function () {
-        if(splash) splash.style.opacity = '0';
-    }, 2000);
-    setTimeout(function () {
-        if(splash) splash.style.display = 'none';
-    }, 2500);
-
-    // 2) تسجيل الدخول والتحقق المحلي والتشغيل التلقائي لشاشة الانتظار
-    if(loginBtn) {
-        loginBtn.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            // إخفاء التنبيهات السابقة
-            loginError.style.display = 'none';
-            successMsg.style.display = 'none';
-
-            // شرط التحقق البسيط
-            if (username.value.trim() === '' || password.value.trim() === '') {
-                loginError.style.display = 'block';
-                return;
-            }
-
-            // إظهار شاشة التحميل
-            loadingScreen.style.display = 'flex';
-
-            // محاكاة انتهاء الفحص بعد 5 ثوانٍ وإظهار رسالة النجاح التجريبية
-            setTimeout(function () {
-                loadingScreen.style.display = 'none';
-                successMsg.style.display = 'block';
-                
-                // تصفير الخانات
-                username.value = '';
-                password.value = '';
-            }, 5000);
-        });
-    }
-
-    if(forgotLink) {
-        forgotLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('هذه نسخة تجريبية: ميزة استعادة كلمة السر غير متوفرة حالياً.');
-        });
-    }
-
-    if(createBtn) {
-        createBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            alert('هذه نسخة تجريبية: ميزة إنشاء حساب جديد غير متوفرة حالياً.');
-        });
-    }
-})();
-</script>
-</body>
-</html>
+    // عناصر واجهة تسجيل الدخول
+    var loginContainer = document.getElementById('loginContainer');
+    var username       = document.getElementById('username');
+    var password       = document.getElementById('password');
+    var loginBtn       = document.getElementById('loginBtn');
+    var loginError     = document.getElementById('loginError');
