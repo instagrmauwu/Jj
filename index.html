@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color=1.0, user-scalable=no, viewport-fit=cover">
-<title>كامورو - إدارة الحساب</title>
+<title>تطبيق كامورو</title>
 <style>
 *{
     margin:0;
@@ -20,20 +20,11 @@ body{
     height: -webkit-fill-available;
     display:flex;
     justify-content:center;
+    align-items:center;
     overflow: hidden;
 }
 
-/* التموضع الافتراضي لتوسيط شاشة الدخول */
-body.center-layout {
-    align-items: center;
-}
-
-/* التموضع الخاص بصفحة نسيت كلمة السر لتبدأ من الأعلى تماماً */
-body.top-layout {
-    align-items: flex-start;
-}
-
-/* ===== شاشة البدء الأولى (SPLASH APP) - ستبقى ثابتة دائماً ===== */
+/* ===== شاشة البدء (SPLASH APP) ===== */
 .splash{
     position:fixed;
     top:0;
@@ -46,6 +37,7 @@ body.top-layout {
     justify-content:center;
     align-items:center;
     z-index:9999;
+    transition: opacity 0.5s ease;
     padding-bottom: env(safe-area-inset-bottom, 40px);
 }
 
@@ -75,31 +67,27 @@ body.top-layout {
     font-weight: 700;
 }
 
-/* ===== حاوية الهاتف (MOBILE CONTAINER) ===== */
+/* ===== الحاويات الرئيسية ===== */
 .container{
-    display:none;
+    display:none; /* مخفية افتراضياً ويتم التحكم بها عبر JS */
     width:100%;
     max-width:414px;
     height:100%;
     padding: 30px 24px calc(20px + env(safe-area-inset-bottom)) 24px;
     flex-direction:column;
+    align-items:center;
+    justify-content: space-between;
 }
 
 .container.active{
     display:flex;
 }
 
-/* تكييف حاوية الدخول لتوزيع العناصر عمودياً بالتساوي */
-#loginContainer {
-    align-items:center;
-    justify-content: space-between;
-}
-
-/* تكييف حاوية البحث لتبدأ من اليمين والأعلى وتترك الفراغ بالأسفل */
+/* ===== واجهة نسيت كلمة السر (إعدادات خاصة لتطابق التصميم) ===== */
 #forgotContainer {
     align-items: flex-start;
     justify-content: flex-start;
-    padding-top: 24px;
+    padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 30px)) 24px;
 }
 
 /* ===== المحتوى الرئيسي لتسجيل الدخول ===== */
@@ -124,7 +112,108 @@ body.top-layout {
     border-radius: 24px;
 }
 
-/* ===== عناصر واجهة البحث عن حساب ===== */
+/* ===== صناديق الإدخال ===== */
+.input-box{
+    width:100%;
+    margin-bottom:16px;
+}
+
+.input-box input{
+    width:100%;
+    height:56px;
+    border: 1.5px solid #22354f;
+    border-radius:16px;
+    background:#16263d;
+    color:white;
+    font-size:15px;
+    padding:0 18px;
+    outline:none;
+    transition: 0.2s;
+    text-align: right;
+}
+
+.input-box input:focus {
+    border-color: #ffb300;
+}
+
+.input-box input::placeholder{
+    color:#738499;
+}
+
+/* ===== الأزرار والروابط ===== */
+.login-btn, .primary-btn{
+    width:100%;
+    height:54px;
+    border:none;
+    border-radius:27px;
+    background: linear-gradient(90deg, #ffb300, #b78103);
+    color:#0f1c2e;
+    font-size:16px;
+    font-weight: bold;
+    cursor:pointer;
+    transition:0.3s;
+    margin-top: 10px;
+    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
+}
+
+.primary-btn {
+    height: 56px;
+    border-radius: 28px;
+    margin-bottom: 16px;
+}
+
+.secondary-btn {
+    width: 100%;
+    height: 56px;
+    border: 1.5px solid #22354f;
+    border-radius: 28px;
+    background: #16263d;
+    color: #8e9aa8;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.secondary-btn:hover {
+    border-color: #ffb300;
+    color: white;
+}
+
+.forgot{
+    margin-top:22px;
+    color:#ffb300;
+    text-decoration:none;
+    font-size:14px;
+    font-weight: 500;
+}
+
+.bottom{
+    width:100%;
+    text-align:center;
+}
+
+.create{
+    width:100%;
+    height:50px;
+    border:1.5px solid #ffb300;
+    border-radius:25px;
+    background:transparent;
+    color:#ffb300;
+    font-size:15px;
+    font-weight: 600;
+    cursor:pointer;
+    margin-top: 25px; 
+}
+
+.meta{
+    margin-top:15px;
+    font-size:14px;
+    color:#8e9aa8;
+    font-weight: 500;
+}
+
+/* ===== عناصر واجهة استعادة الحساب ===== */
 .back-btn {
     font-size: 24px;
     color: #ffb300;
@@ -158,111 +247,10 @@ h1 {
     font-weight: 500;
     margin-bottom: 40px;
     display: inline-block;
-}
-
-/* ===== صناديق المدخلات المشتركة ===== */
-.input-box{
-    width:100%;
-    margin-bottom:16px;
-}
-
-.input-box input{
-    width:100%;
-    height:56px;
-    border: 1.5px solid #22354f;
-    border-radius:16px;
-    background:#16263d;
-    color:white;
-    font-size:15px;
-    padding:0 18px;
-    outline:none;
-    transition: 0.2s;
-    text-align: right;
-}
-
-.input-box input:focus {
-    border-color: #ffb300;
-}
-
-.input-box input::placeholder{
-    color:#738499;
-}
-
-/* ===== الأزرار والتنسيقات المشتركة ===== */
-.login-btn, .primary-btn{
-    width:100%;
-    height:54px;
-    border:none;
-    border-radius:27px;
-    background: linear-gradient(90deg, #ffb300, #b78103);
-    color:#0f1c2e;
-    font-size:16px;
-    font-weight: bold;
-    cursor:pointer;
-    transition:0.3s;
-    margin-top: 10px;
-    box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
-}
-
-.primary-btn {
-    height: 56px;
-    border-radius: 28px;
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-
-.secondary-btn {
-    width: 100%;
-    height: 56px;
-    border: 1.5px solid #22354f;
-    border-radius: 28px;
-    background: #16263d;
-    color: #8e9aa8;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
     transition: 0.2s;
 }
 
-.secondary-btn:hover {
-    border-color: #ffb300;
-    color: white;
-}
-
-.forgot{
-    margin-top:22px;
-    color:#ffb300;
-    text-decoration:none;
-    font-size:14px;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-.bottom{
-    width:100%;
-    text-align:center;
-}
-
-.create{
-    width:100%;
-    height:50px;
-    border:1.5px solid #ffb300;
-    border-radius:25px;
-    background:transparent;
-    color:#ffb300;
-    font-size:15px;
-    font-weight: 600;
-    cursor:pointer;
-    margin-top: 25px; 
-}
-
-.meta{
-    margin-top:15px;
-    font-size:14px;
-    color:#8e9aa8;
-    font-weight: 500;
-}
-
+/* ===== رسائل الخطأ والنجاح ===== */
 .error-msg{
     color:#ff5252;
     font-size:13px;
@@ -280,7 +268,7 @@ h1 {
     font-weight:bold;
 }
 
-/* ===== شاشة التحميل الأخرى الداخلية (الدوّارة النمطية) ===== */
+/* ===== شاشة التحميل المشتركة ===== */
 .loading-screen{
     display:none;
     position:fixed;
@@ -317,9 +305,9 @@ h1 {
 }
 </style>
 </head>
-<body class="center-layout" id="appBody">
+<body>
 
-<!-- ⭐ التدرج الذهبي الموحد -->
+<!-- ⭐ التدرج الذهبي لـ SVG -->
 <svg width="0" height="0" style="position:absolute; top:-9999px; left:-9999px;" aria-hidden="true">
     <defs>
         <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
@@ -331,7 +319,7 @@ h1 {
     </defs>
 </svg>
 
-<!-- شاشة البدء الأولى (SPLASH SCREEN) - تم إيقاف كود إخفائها لتظل معروضة للأبد وتدور دائرتها -->
+<!-- 1) شاشة البدء (SPLASH SCREEN) -->
 <div class="splash" id="splash">
     <svg viewBox="0 0 100 100" fill="none">
         <rect width="100" height="100" rx="28" fill="#16263d"/>
@@ -344,13 +332,13 @@ h1 {
     </div>
 </div>
 
-<!-- شاشة انتظر/جاري التحميل الدوّارة -->
+<!-- 2) شاشة انتظر/جاري التحميل الدوارة -->
 <div class="loading-screen" id="loadingScreen">
     <div class="spinner"></div>
     <p id="loadingText">جاري التحقق من البيانات...</p>
 </div>
 
-<!-- ================= الواجهة 1: تسجيل الدخول الرئيسي ================= -->
+<!-- 3) واجهة تسجيل الدخول الرئيسي -->
 <div class="container active" id="loginContainer">
     <div class="main-content">
         <div class="logo">
@@ -372,7 +360,7 @@ h1 {
         <div class="success-msg" id="successMsg">تم تسجيل الدخول بنجاح!</div>
 
         <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
-        <a class="forgot" id="forgotLink">هل نسيت كلمة السر؟</a>
+        <a href="#" class="forgot" id="forgotLink">هل نسيت كلمة السر؟</a>
     </div>
 
     <div class="bottom">
@@ -381,31 +369,38 @@ h1 {
     </div>
 </div>
 
-<!-- ================= الواجهة 2: البحث عن الحساب (نسيت كلمة السر) ================= -->
+<!-- 4) واجهة البحث عن ملفك الشخصي (نسيت كلمة السر) -->
 <div class="container" id="forgotContainer">
-    <a class="back-btn" id="backBtn">&larr;</a>
+    <!-- سهم العودة للخلف يعيد المستخدم للواجهة الرئيسية -->
+    <a href="#" class="back-btn" id="backToLoginBtn">&larr;</a>
     
     <h1>ابحث عن ملفك الشخصي</h1>
     <p class="sub-title">أدخل رقم هاتفك المحمول المربوط بالحساب.</p>
-    <a href="#" class="hacked-link">أعتقد أن حسابي قد تعرض للاختراق؟</a>
+    <a href="#" class="hacked-link" id="hackedLink">أعتقد أن حسابي قد تعرض للاختراق؟</a>
     
     <div class="input-box">
         <input type="tel" id="phone" placeholder="رقم الهاتف المحمول">
     </div>
     
-    <button class="primary-btn" id="searchPhoneBtn">متابعة</button>
-    <button class="secondary-btn" id="switchMethodBtn">البحث بواسطة البريد الإلكتروني أو اسم المستخدم</button>
+    <button class="primary-btn" id="forgotContinueBtn">متابعة</button>
+    <button class="secondary-btn" id="switchToEmailBtn">البحث بواسطة البريد الإلكتروني أو اسم المستخدم</button>
 </div>
 
 <script>
 (function () {
-    var appBody       = document.getElementById('appBody');
-    var loadingScreen = document.getElementById('loadingScreen');
-    var loadingText   = document.getElementById('loadingText');
+    // جلب العناصر
+    var splash          = document.getElementById('splash');
+    var loadingScreen   = document.getElementById('loadingScreen');
+    var loadingText     = document.getElementById('loadingText');
+    
+    var loginContainer  = document.getElementById('loginContainer');
+    var forgotContainer = document.getElementById('forgotContainer');
 
-    var loginContainer = document.getElementById('loginContainer');
-    var username       = document.getElementById('username');
-    var password       = document.getElementById('password');
-    var loginBtn       = document.getElementById('loginBtn');
-    var loginError     = document.getElementById('loginError');
-    var successMsg     = document.getElementById('successMsg');
+    var username        = document.getElementById('username');
+    var password        = document.getElementById('password');
+    var loginBtn        = document.getElementById('loginBtn');
+    var loginError      = document.getElementById('loginError');
+    var successMsg      = document.getElementById('successMsg');
+    var forgotLink      = document.getElementById('forgotLink');
+    var createBtn       = document.getElementById('createBtn');
+    
