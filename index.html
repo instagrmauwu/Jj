@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>تطبيق كامورو</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-color=1.0, user-scalable=no, viewport-fit=cover">
+<title>تسجيل دخول كامورو</title>
 <style>
 *{
     margin:0;
@@ -67,7 +67,7 @@ body{
     font-weight: 700;
 }
 
-/* ===== الحاويات الرئيسية ===== */
+/* ===== حاوية الهاتف (MOBILE CONTAINER) ===== */
 .container{
     display:none;
     width:100%;
@@ -81,13 +81,6 @@ body{
 
 .container.active{
     display:flex;
-}
-
-/* ===== واجهة نسيت كلمة السر ===== */
-#forgotContainer {
-    align-items: flex-start;
-    justify-content: flex-start;
-    padding: 24px 24px calc(24px + env(safe-area-inset-bottom, 30px)) 24px;
 }
 
 /* ===== المحتوى الرئيسي لتسجيل الدخول ===== */
@@ -112,7 +105,6 @@ body{
     border-radius: 24px;
 }
 
-/* ===== صناديق الإدخال ===== */
 .input-box{
     width:100%;
     margin-bottom:16px;
@@ -140,8 +132,7 @@ body{
     color:#738499;
 }
 
-/* ===== الأزرار والروابط ===== */
-.login-btn, .primary-btn{
+.login-btn{
     width:100%;
     height:54px;
     border:none;
@@ -154,30 +145,6 @@ body{
     transition:0.3s;
     margin-top: 10px;
     box-shadow: 0 4px 15px rgba(255, 179, 0, 0.2);
-}
-
-.primary-btn {
-    height: 56px;
-    border-radius: 28px;
-    margin-bottom: 16px;
-}
-
-.secondary-btn {
-    width: 100%;
-    height: 56px;
-    border: 1.5px solid #22354f;
-    border-radius: 28px;
-    background: #16263d;
-    color: #8e9aa8;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.secondary-btn:hover {
-    border-color: #ffb300;
-    color: white;
 }
 
 .forgot{
@@ -193,6 +160,7 @@ body{
     text-align:center;
 }
 
+/* التعديل هنا: إضافة الهامش العلوي (margin-top) لمنع تداخل الزر مع النصوص */
 .create{
     width:100%;
     height:50px;
@@ -213,44 +181,6 @@ body{
     font-weight: 500;
 }
 
-/* ===== عناصر واجهة استعادة الحساب ===== */
-.back-btn {
-    font-size: 24px;
-    color: #ffb300;
-    cursor: pointer;
-    text-decoration: none;
-    margin-bottom: 25px;
-    align-self: flex-start;
-    display: inline-block;
-}
-
-h1 {
-    font-size: 28px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    text-align: right;
-    width: 100%;
-}
-
-.sub-title {
-    font-size: 15px;
-    color: #8e9aa8;
-    margin-bottom: 14px;
-    text-align: right;
-    width: 100%;
-}
-
-.hacked-link {
-    color: #ffb300;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    margin-bottom: 40px;
-    display: inline-block;
-    transition: 0.2s;
-}
-
-/* ===== رسائل الخطأ والنجاح ===== */
 .error-msg{
     color:#ff5252;
     font-size:13px;
@@ -268,7 +198,7 @@ h1 {
     font-weight:bold;
 }
 
-/* ===== شاشة التحميل المشتركة ===== */
+/* ===== شاشة التحميل ===== */
 .loading-screen{
     display:none;
     position:fixed;
@@ -307,7 +237,7 @@ h1 {
 </head>
 <body>
 
-<!-- ⭐ التدرج الذهبي لـ SVG -->
+<!-- ⭐ التدرج الذهبي معرّف هنا مرة واحدة، في SVG ثابتة لا تختفي أبداً -->
 <svg width="0" height="0" style="position:absolute; top:-9999px; left:-9999px;" aria-hidden="true">
     <defs>
         <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
@@ -319,7 +249,7 @@ h1 {
     </defs>
 </svg>
 
-<!-- 1) شاشة البدء (SPLASH SCREEN) -->
+<!-- شاشة البدء (SPLASH SCREEN) -->
 <div class="splash" id="splash">
     <svg viewBox="0 0 100 100" fill="none">
         <rect width="100" height="100" rx="28" fill="#16263d"/>
@@ -332,13 +262,13 @@ h1 {
     </div>
 </div>
 
-<!-- 2) شاشة انتظر/جاري التحميل الدوارة -->
+<!-- شاشة انتظر/جاري التحميل -->
 <div class="loading-screen" id="loadingScreen">
     <div class="spinner"></div>
     <p id="loadingText">جاري التحقق من البيانات...</p>
 </div>
 
-<!-- 3) واجهة تسجيل الدخول الرئيسي -->
+<!-- واجهة تسجيل الدخول الرئيسي -->
 <div class="container active" id="loginContainer">
     <div class="main-content">
         <div class="logo">
@@ -357,7 +287,7 @@ h1 {
         </div>
 
         <div class="error-msg" id="loginError">يرجى ملء جميع الحقول.</div>
-        <div class="success-msg" id="successMsg">تم تسجيل الدخول بنجاح!</div>
+        <div class="success-msg" id="successMsg">تم تسجيل الدخول بنجاح! (نسخة تجريبية — لم يتم إرسال أي بيانات)</div>
 
         <button class="login-btn" id="loginBtn">تسجيل الدخول</button>
         <a href="#" class="forgot" id="forgotLink">هل نسيت كلمة السر؟</a>
@@ -369,39 +299,76 @@ h1 {
     </div>
 </div>
 
-<!-- 4) واجهة البحث عن ملفك الشخصي (نسيت كلمة السر) -->
-<div class="container" id="forgotContainer">
-    <a href="#" class="back-btn" id="backToLoginBtn">&larr;</a>
-    
-    <h1>ابحث عن ملفك الشخصي</h1>
-    <p class="sub-title">أدخل رقم هاتفك المحمول المربوط بالحساب.</p>
-    <a href="#" class="hacked-link" id="hackedLink">أعتقد أن حسابي قد تعرض للاختراق؟</a>
-    
-    <div class="input-box">
-        <input type="tel" id="phone" placeholder="رقم الهاتف المحمول">
-    </div>
-    
-    <button class="primary-btn" id="forgotContinueBtn">متابعة</button>
-    <button class="secondary-btn" id="switchToEmailBtn">البحث بواسطة البريد الإلكتروني أو اسم المستخدم</button>
-</div>
-
 <script>
 /* ============================================================
-   منطق الواجهة المصحح بالكامل (front-end only)
+   منطق الواجهة — نسخة تجريبية نقية (front-end only)
+   لا يوجد أي إرسال بيانات أو تخزين أو طلبات شبكة.
    ============================================================ */
 (function () {
-    var splash          = document.getElementById('splash');
-    var loadingScreen   = document.getElementById('loadingScreen');
-    var loadingText     = document.getElementById('loadingText');
-    
-    var loginContainer  = document.getElementById('loginContainer');
-    var forgotContainer = document.getElementById('forgotContainer');
+    var splash        = document.getElementById('splash');
+    var loadingScreen = document.getElementById('loadingScreen');
+    var loadingText   = document.getElementById('loadingText');
 
-    var username        = document.getElementById('username');
-    var password        = document.getElementById('password');
-    var loginBtn        = document.getElementById('loginBtn');
-    var loginError      = document.getElementById('loginError');
-    var successMsg      = document.getElementById('successMsg');
-    var forgotLink      = document.getElementById('forgotLink');
-    var createBtn       = document.getElementById('createBtn');
-    
+    var username   = document.getElementById('username');
+    var password   = document.getElementById('password');
+    var loginBtn   = document.getElementById('loginBtn');
+    var loginError = document.getElementById('loginError');
+    var successMsg = document.getElementById('successMsg');
+    var forgotLink = document.getElementById('forgotLink');
+    var createBtn  = document.getElementById('createBtn');
+
+    // 1) إخفاء شاشة البدء (Splash) بعد ثانيتين مع تلاشي ناعم
+    setTimeout(function () {
+        if(splash) splash.style.opacity = '0';
+    }, 2000);
+    setTimeout(function () {
+        if(splash) splash.style.display = 'none';
+    }, 2500);
+
+    // 2) تسجيل الدخول والتحقق المحلي والتشغيل التلقائي لشاشة الانتظار
+    if(loginBtn) {
+        loginBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            // إخفاء التنبيهات السابقة
+            loginError.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            // شرط التحقق البسيط
+            if (username.value.trim() === '' || password.value.trim() === '') {
+                loginError.style.display = 'block';
+                return;
+            }
+
+            // إظهار شاشة التحميل
+            loadingScreen.style.display = 'flex';
+
+            // محاكاة انتهاء الفحص بعد 5 ثوانٍ وإظهار رسالة النجاح التجريبية
+            setTimeout(function () {
+                loadingScreen.style.display = 'none';
+                successMsg.style.display = 'block';
+                
+                // تصفير الخانات
+                username.value = '';
+                password.value = '';
+            }, 5000);
+        });
+    }
+
+    if(forgotLink) {
+        forgotLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('هذه نسخة تجريبية: ميزة استعادة كلمة السر غير متوفرة حالياً.');
+        });
+    }
+
+    if(createBtn) {
+        createBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('هذه نسخة تجريبية: ميزة إنشاء حساب جديد غير متوفرة حالياً.');
+        });
+    }
+})();
+</script>
+</body>
+</html>
